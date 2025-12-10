@@ -228,8 +228,8 @@ const ClientProfile = () => {
           </div>
 
           {/* Save Button */}
-          <Button onClick={handleSave} className="w-full">
-            Save Profile
+          <Button onClick={handleSave} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3">
+            Complete Profile
           </Button>
         </div>
       </main>
