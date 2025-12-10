@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, User, MapPin, RefreshCw } from "lucide-react";
 
 const ClientProfile = () => {
@@ -41,7 +40,7 @@ const ClientProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-muted">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-card border-b border-border sticky top-0 z-10">
         <div className="max-w-3xl mx-auto px-4">
@@ -83,14 +82,14 @@ const ClientProfile = () => {
             </div>
 
             {/* Avatar Upload */}
-            <div className="flex flex-col items-center mb-6 p-6 bg-muted rounded-lg">
-              <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mb-3">
+            <div className="flex flex-col items-center mb-6 p-6 bg-input rounded-lg">
+              <div className="w-24 h-24 bg-primary/30 rounded-full flex items-center justify-center mb-3">
                 <span className="text-2xl font-semibold text-primary">OP</span>
               </div>
-              <Button variant="link" className="text-primary">
+              <Button variant="link" className="text-primary p-0 h-auto">
                 Upload Photo
               </Button>
-              <p className="text-xs text-muted-foreground">Optional • JPEG, PNG, GIF up to 5MB</p>
+              <p className="text-xs text-muted-foreground mt-1">Optional • JPEG, PNG, GIF up to 5MB</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -102,6 +101,7 @@ const ClientProfile = () => {
                   placeholder="Enter your full name"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  className="bg-card border-border"
                 />
               </div>
               <div>
@@ -112,6 +112,7 @@ const ClientProfile = () => {
                   placeholder="+234 XXX XXX XXXX"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="bg-card border-border"
                 />
               </div>
             </div>
@@ -125,6 +126,7 @@ const ClientProfile = () => {
                   placeholder="Choose a unique username"
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                  className="bg-card border-border pr-10"
                 />
                 <button className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-card-foreground">
                   <RefreshCw size={16} />
@@ -144,6 +146,7 @@ const ClientProfile = () => {
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                 rows={3}
+                className="bg-card border-border"
               />
               <p className="text-xs text-muted-foreground mt-1">
                 Optional • Share a bit about yourself with other users
@@ -166,6 +169,7 @@ const ClientProfile = () => {
                 placeholder="e.g., Victoria Island, Lekki, Ikeja"
                 value={formData.preferredLocation}
                 onChange={(e) => setFormData({ ...formData, preferredLocation: e.target.value })}
+                className="bg-card border-border"
               />
             </div>
 
@@ -178,6 +182,7 @@ const ClientProfile = () => {
                   placeholder="e.g., 2000000 (leave empty for no minimum)"
                   value={formData.minBudget}
                   onChange={(e) => setFormData({ ...formData, minBudget: e.target.value })}
+                  className="bg-card border-border"
                 />
               </div>
               <div>
@@ -188,6 +193,7 @@ const ClientProfile = () => {
                   placeholder="e.g., 5000000 (leave empty for unlimited)"
                   value={formData.maxBudget}
                   onChange={(e) => setFormData({ ...formData, maxBudget: e.target.value })}
+                  className="bg-card border-border"
                 />
               </div>
             </div>
@@ -200,10 +206,20 @@ const ClientProfile = () => {
                 {Object.entries(formData.propertyTypes).map(([type, checked]) => (
                   <div
                     key={type}
-                    className="flex items-center gap-2 p-3 border border-border rounded-lg hover:bg-muted cursor-pointer"
+                    className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-input cursor-pointer bg-card"
                     onClick={() => handlePropertyTypeChange(type as keyof typeof formData.propertyTypes)}
                   >
-                    <Checkbox checked={checked} />
+                    <div 
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                        checked 
+                          ? 'border-primary bg-primary' 
+                          : 'border-border'
+                      }`}
+                    >
+                      {checked && (
+                        <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+                      )}
+                    </div>
                     <span className="text-sm text-card-foreground capitalize">{type}</span>
                   </div>
                 ))}
