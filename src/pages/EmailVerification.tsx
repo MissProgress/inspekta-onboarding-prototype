@@ -17,14 +17,14 @@ const EmailVerification = () => {
             <Mail className="w-8 h-8 text-primary" />
           </div>
 
-          <h1 className="text-2xl font-semibold text-card-foreground mb-2">
+          <h1 className="text-xl font-semibold text-card-foreground mb-2">
             Check Your Email
           </h1>
           <p className="text-muted-foreground text-sm mb-6">
             We've sent a verification link to your email address. Please click the link to verify your account.
           </p>
 
-          <div className="bg-muted rounded-lg p-4 mb-6">
+          <div className="bg-input rounded-lg p-4 mb-6">
             <p className="text-sm text-card-foreground">
               Didn't receive the email? Check your spam folder or click below to resend.
             </p>
@@ -35,7 +35,7 @@ const EmailVerification = () => {
               I've Verified My Email
             </Button>
             
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full bg-card border-border text-card-foreground hover:bg-muted">
               <RefreshCw className="w-4 h-4 mr-2" />
               Resend Verification Email
             </Button>

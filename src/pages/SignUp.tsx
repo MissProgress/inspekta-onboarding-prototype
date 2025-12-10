@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ChevronDown } from "lucide-react";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
+    userType: "client",
     fullName: "",
     email: "",
     phone: "",
@@ -39,7 +39,7 @@ const SignUp = () => {
       <div className="w-full max-w-md animate-fade-in">
         <div className="bg-card rounded-lg p-6 md:p-8 shadow-lg">
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-semibold text-card-foreground">
+            <h1 className="text-xl font-semibold text-card-foreground">
               Create Account
             </h1>
             <p className="text-muted-foreground mt-1 text-sm">
@@ -48,6 +48,27 @@ const SignUp = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* User Type Dropdown */}
+            <div>
+              <label className="block text-sm font-medium text-card-foreground mb-1.5">
+                I am a
+              </label>
+              <div className="relative">
+                <select
+                  value={formData.userType}
+                  onChange={(e) =>
+                    setFormData({ ...formData, userType: e.target.value })
+                  }
+                  className="w-full h-10 px-3 pr-10 rounded-md border border-border bg-input text-card-foreground text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-ring"
+                >
+                  <option value="client">Client - Looking for properties</option>
+                  <option value="agent">Agent - Listing properties</option>
+                  <option value="inspector">Inspector</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-card-foreground mb-1.5">
                 Full Name
@@ -58,6 +79,7 @@ const SignUp = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, fullName: e.target.value })
                 }
+                className="bg-input border-border"
               />
             </div>
 
@@ -72,6 +94,7 @@ const SignUp = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
+                className="bg-input border-border"
               />
             </div>
 
@@ -86,6 +109,7 @@ const SignUp = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, phone: e.target.value })
                 }
+                className="bg-input border-border"
               />
             </div>
 
@@ -101,13 +125,14 @@ const SignUp = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
+                  className="bg-input border-border pr-14"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-card-foreground text-sm"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-card-foreground text-xs font-medium"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
             </div>
@@ -116,73 +141,82 @@ const SignUp = () => {
               <label className="block text-sm font-medium text-card-foreground mb-1.5">
                 Confirm Password
               </label>
-              <div className="relative">
-                <Input
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm password"
-                  value={formData.confirmPassword}
-                  onChange={(e) =>
-                    setFormData({ ...formData, confirmPassword: e.target.value })
-                  }
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-card-foreground text-sm"
-                >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
+              <Input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm password"
+                value={formData.confirmPassword}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
+                className="bg-input border-border"
+              />
             </div>
 
-            <div className="space-y-3 pt-2">
-              <div className="flex items-start gap-2">
-                <Checkbox
-                  id="terms"
-                  checked={formData.acceptTerms}
-                  onCheckedChange={(checked) =>
-                    setFormData({ ...formData, acceptTerms: checked as boolean })
-                  }
-                  className="mt-0.5"
-                />
-                <label htmlFor="terms" className="text-sm text-card-foreground">
-                  I accept the{" "}
-                  <a href="#" className="text-primary hover:underline">
-                    Terms of Service
-                  </a>{" "}
-                  <span className="text-destructive">*</span>
+            {/* Legal & Privacy Section */}
+            <div className="pt-4 border-t border-border">
+              <p className="text-sm font-medium text-card-foreground mb-3">Legal & Privacy</p>
+              
+              <div className="space-y-3">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <div 
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      formData.acceptTerms 
+                        ? 'border-primary bg-primary' 
+                        : 'border-destructive'
+                    }`}
+                    onClick={() => setFormData({ ...formData, acceptTerms: !formData.acceptTerms })}
+                  >
+                    {formData.acceptTerms && (
+                      <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+                    )}
+                  </div>
+                  <span className="text-sm text-card-foreground">
+                    I accept the{" "}
+                    <a href="#" className="text-primary hover:underline">
+                      Terms of Service
+                    </a>{" "}
+                    <span className="text-destructive">*</span>
+                  </span>
                 </label>
-              </div>
 
-              <div className="flex items-start gap-2">
-                <Checkbox
-                  id="privacy"
-                  checked={formData.acceptPrivacy}
-                  onCheckedChange={(checked) =>
-                    setFormData({ ...formData, acceptPrivacy: checked as boolean })
-                  }
-                  className="mt-0.5"
-                />
-                <label htmlFor="privacy" className="text-sm text-card-foreground">
-                  I accept the{" "}
-                  <a href="#" className="text-primary hover:underline">
-                    Privacy Policy
-                  </a>{" "}
-                  <span className="text-destructive">*</span>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <div 
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      formData.acceptPrivacy 
+                        ? 'border-primary bg-primary' 
+                        : 'border-destructive'
+                    }`}
+                    onClick={() => setFormData({ ...formData, acceptPrivacy: !formData.acceptPrivacy })}
+                  >
+                    {formData.acceptPrivacy && (
+                      <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+                    )}
+                  </div>
+                  <span className="text-sm text-card-foreground">
+                    I accept the{" "}
+                    <a href="#" className="text-primary hover:underline">
+                      Privacy Policy
+                    </a>{" "}
+                    <span className="text-destructive">*</span>
+                  </span>
                 </label>
-              </div>
 
-              <div className="flex items-start gap-2">
-                <Checkbox
-                  id="marketing"
-                  checked={formData.acceptMarketing}
-                  onCheckedChange={(checked) =>
-                    setFormData({ ...formData, acceptMarketing: checked as boolean })
-                  }
-                  className="mt-0.5"
-                />
-                <label htmlFor="marketing" className="text-sm text-card-foreground">
-                  I consent to receiving marketing communications
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <div 
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      formData.acceptMarketing 
+                        ? 'border-primary bg-primary' 
+                        : 'border-border'
+                    }`}
+                    onClick={() => setFormData({ ...formData, acceptMarketing: !formData.acceptMarketing })}
+                  >
+                    {formData.acceptMarketing && (
+                      <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+                    )}
+                  </div>
+                  <span className="text-sm text-card-foreground">
+                    I consent to receiving marketing communications
+                  </span>
                 </label>
               </div>
             </div>
